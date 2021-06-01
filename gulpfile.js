@@ -1,4 +1,4 @@
-const { src, dest, parallel, series, watch } = require("gulp");
+const { src, dest, series, watch } = require("gulp");
 const autoprefixer = require("gulp-autoprefixer");
 const cleanCSS = require("gulp-clean-css");
 const uglify = require("gulp-uglify-es").default;
@@ -10,13 +10,14 @@ const fileInclude = require("gulp-file-include");
 const sourcemaps = require("gulp-sourcemaps");
 const htmlmin = require("gulp-htmlmin");
 const gulpif = require("gulp-if");
+const rename = require("gulp-rename");
 const notify = require("gulp-notify");
 const image = require("gulp-image");
 const concat = require("gulp-concat");
 const ttf2woff = require("gulp-ttf2woff");
 const ttf2woff2 = require("gulp-ttf2woff2");
 
-let isRelease = false; // dev by default
+let buildReady = false;
 
 const clean = () => {
    return del(["app/*"]);
@@ -38,15 +39,19 @@ const svgSprites = () => {
 
 const styles = () => {
    return src("./src/scss/**/*.scss")
-      .pipe(gulpif(!isRelease, sourcemaps.init()))
+      .pipe(gulpif(!buildReady, sourcemaps.init()))
       .pipe(sass().on("error", notify.onError()))
       .pipe(
          autoprefixer({
             cascade: false,
          })
       )
-      .pipe(gulpif(isRelease, cleanCSS({ level: 2 })))
-      .pipe(gulpif(!isRelease, sourcemaps.write(".")))
+      .pipe(gulpif(!buildReady, sourcemaps.write(".")))
+      .pipe(dest("./app/css/"))
+      .pipe(cleanCSS({ level: 2 }))
+      .pipe(rename({
+         extname: ".min.css",
+      }))
       .pipe(dest("./app/css/"))
       .pipe(browserSync.stream());
 };
@@ -54,17 +59,28 @@ const styles = () => {
 const scripts = () => {
    src("./src/js/vendor/**.js")
       .pipe(concat("vendor.js"))
-      .pipe(gulpif(isRelease, uglify().on("error", notify.onError())))
+      .pipe(uglify().on("error", notify.onError()))
+      .pipe(
+         rename({
+            extname: ".min.js",
+         })
+      )
       .pipe(dest("./app/js/"));
-   return src(["./src/js/variables.js", 
-               "./src/js/functions/**.js", 
-               "./src/js/components/**.js",
-               "./src/js/events.js",
-               "./src/js/script.js"])
-      .pipe(gulpif(!isRelease, sourcemaps.init()))
+
+   src(["./src/js/components/**.js", "./src/js/script.js"])
       .pipe(concat("script.js"))
-      .pipe(gulpif(isRelease, uglify().on("error", notify.onError())))
-      .pipe(gulpif(!isRelease, sourcemaps.write(".")))
+      .pipe(uglify())
+      .pipe(
+         rename({
+            extname: ".min.js",
+         })
+      )
+      .pipe(dest("./app/js"));
+
+   return src(["./src/js/components/**.js", "./src/js/script.js"])
+      .pipe(gulpif(!buildReady, sourcemaps.init()))
+      .pipe(concat("script.js"))
+      .pipe(gulpif(!buildReady, sourcemaps.write(".")))
       .pipe(dest("./app/js"))
       .pipe(browserSync.stream());
 };
@@ -86,12 +102,12 @@ const resources = () => {
 };
 
 const images = () => {
-   return src(["./src/img/**/*.jpg", 
-               "./src/img/**/*.png", 
-               "./src/img/**/*.jpeg", 
-               "./src/img/**/*.svg", 
+   return src(["./src/img/**/*.jpg",
+               "./src/img/**/*.png",
+               "./src/img/**/*.jpeg",
+               "./src/img/**/*.svg",
                "./src/img/**/*.ico"])
-      .pipe(gulpif(isRelease, image()))
+      .pipe(gulpif(buildReady, image()))
       .pipe(dest("./app/img"));
 };
 
@@ -116,7 +132,7 @@ const watchFiles = () => {
 
    watch("./src/scss/**/*.scss", styles);
    watch("./src/js/**/*.js", scripts);
-   watch("./src/html-components/*.html", htmlInclude);
+   watch("./src/parts/*.html", htmlInclude);
    watch("./src/*.html", htmlInclude);
    watch("./src/resources/**", resources);
    watch("./src/img/*.{jpg,jpeg,png,svg,ico}", images);
@@ -134,7 +150,7 @@ const htmlMinify = () => {
 };
 
 const toRelease = (done) => {
-   isRelease = true;
+   buildReady = true;
    done();
 };
 

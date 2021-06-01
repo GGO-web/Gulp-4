@@ -1,7 +1,7 @@
 {
-  "name": "gulpfor",
+  "name": "sitetemplate",
   "version": "1.0.0",
-  "description": "gulp for web",
+  "description": "",
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,7 +33,13 @@
     "gulp-ttf2woff": "^1.1.1",
     "gulp-ttf2woff2": "^4.0.1",
     "gulp-uglify-es": "^2.0.0",
-    "postcss-sorting": "^6.0.0"
+    "postcss-sorting": "^6.0.0",
+    "stylelint": "^13.13.1",
+    "stylelint-declaration-block-no-ignored-properties": "^2.3.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.19.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "just-validate": "^1.5.0"
+  }
 }
