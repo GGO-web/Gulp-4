@@ -28,5 +28,3 @@ burger.addEventListener("click", function () {
 window.addEventListener("orientationchange", () => {
    closeBurgerMenu();
 });
-
-'use strict';

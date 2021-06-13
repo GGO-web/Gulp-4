@@ -54,6 +54,7 @@ address {
 
 .btn-reset {
    border: none;
+   padding: 0;
    background: transparent;
    cursor: pointer;
 }
@@ -64,6 +65,7 @@ address {
 
 .site-container {
    overflow: hidden;
+   min-height: 100vh;
 }
 
 .hide-scroll {

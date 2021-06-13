@@ -2,30 +2,39 @@
    <div class="container">
       <div class="header__inner">
          <a class="header__logo" aria-label="Logo">
-            <img src="img/logo.svg" alt="Logo">
+            <!-- <img src="img/logo.svg" alt="Logo"> -->
          </a>
-         <nav class="header__nav">
-            <ul class="header__list">
-               <li class="header__list-item">
-                  <a href="#" class="header__list-link">О нас</a>
-               </li>
-               <li class="header__list-item">
-                  <a href="#" class="header__list-link">Оплата</a>
-               </li>
-               <li class="header__list-item">
-                  <a href="#" class="header__list-link">Программа лояльности</a>
-               </li>
-               <li class="header__list-item">
-                  <a href="#" class="header__list-link">Партнерам</a>
-               </li>
-               <li class="header__list-item">
-                  <a href="#" class="header__list-link">Бонусы</a>
-               </li>
-            </ul>
-         </nav>
-         <button class="burger header__burger for-mobile" aria-label="Открыть меню">
-            <span class="burger__line" aria-hidden="true"></span>
-         </button>
+
+         <div class="header__menu">
+            <nav class="header__nav">
+               <ul class="header__list">
+                  <li class="header__list-item">
+                     <a class="header__list-link" href="#">About</a>
+                  </li>
+                  <li class="header__list-item">
+                     <a class="header__list-link" href="#">Prices</a>
+                  </li>
+                  <li class="header__list-item">
+                     <a class="header__list-link" href="#">Our Products</a>
+                     <ul class="header__sublist">
+                        <li class="header__sublist-item">
+                           <a class="header__sublist-link" href="#">Sublist Item 1</a>
+                        </li>
+                        <li class="header__sublist-item">
+                           <a class="header__sublist-link" href="#">Sublist Item 2</a>
+                        </li>
+                        <li class="header__sublist-item">
+                           <a class="header__sublist-link" href="#">Sublist Item 3</a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </nav>
+
+            <button class="burger header__menu-button btn-reset" aria-expanded="true" aria-label="Burger Menu">
+               <span class="burger__line"></span>
+            </button>
+         </div>
       </div>
    </div>
 </header>

@@ -1,0 +1,15 @@
+.burger {
+   --burger-width: 30px;
+   --burger-height: 16px;
+   --burger-color: var(--color-black);
+
+   @include burger;
+
+   @include mobileL {
+      margin-left: 20px;
+   }
+
+   @media (min-width: 769px) {
+      display: none;
+   }
+}
